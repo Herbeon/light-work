@@ -1,8 +1,11 @@
 using Godot;
 using System;
+using System.IO.Ports;
 
 public partial class Player : CharacterBody2D
 {
+	SerialPort serialPort;
+
 	public const float Speed = 500.0f;
 	public const float JumpVelocity = -800.0f;
 	private AnimatedSprite2D _animatedSprite;
@@ -12,6 +15,10 @@ public partial class Player : CharacterBody2D
 
 	public override void _Ready()
 	{
+		serialPort = new SerialPort();
+		serialPort.PortName = "/dev/ttyACM0";
+		serialPort.BaudRate = 9600;
+		serialPort.Open();
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		_animatedwing1 = GetNode<AnimatedSprite2D>("AnimatedSprite2D2");
 		_animatedwing2 = GetNode<AnimatedSprite2D>("AnimatedSprite2D3");
@@ -19,8 +26,24 @@ public partial class Player : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		Vector2 velocity = Velocity;
 
+		Vector2 velocity = Velocity;
+		if (!serialPort.IsOpen)
+		{
+			return;
+		}
+		if(serialPort.BytesToRead > 0)
+		{
+			GD.Print("HELO");
+			string serialMessage = serialPort.ReadLine();
+			GD.Print(serialMessage);
+
+			if (serialMessage == "h"){
+				velocity.Y = JumpVelocity;
+
+				GD.Print("textytextext");
+			}	
+		}
 		// Add the gravity.
 		if (!IsOnFloor())
 		{

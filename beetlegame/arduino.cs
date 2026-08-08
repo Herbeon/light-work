@@ -38,6 +38,7 @@ public partial class arduino : Node2D
 				GD.Print("textytextext");
 				lalala++;
 				text.Text = "HELLOBACK" + lalala;
+				
 			}	
 		}
 

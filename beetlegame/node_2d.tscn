@@ -57,7 +57,7 @@ animations = [{
 }],
 "loop": 1,
 "name": &"sitting",
-"speed": 8.0
+"speed": 4.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tcrup"]
@@ -84,7 +84,7 @@ animations = [{
 }],
 "loop": 1,
 "name": &"default",
-"speed": 6.0
+"speed": 12.0
 }, {
 "frames": [],
 "loop": 1,
@@ -109,7 +109,7 @@ animations = [{
 }],
 "loop": 1,
 "name": &"default",
-"speed": 6.0
+"speed": 12.0
 }, {
 "frames": [],
 "loop": 1,
@@ -413,9 +413,11 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_0h7mo")
 
 [node name="Node2D" type="Node2D" unique_id=1672223505]
+
+[node name="Node2D2" type="Node2D" parent="." unique_id=756549897]
 script = ExtResource("1_wtcfe")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=357028713]
+[node name="RichTextLabel" type="RichTextLabel" parent="Node2D2" unique_id=357028713]
 offset_left = 62.0
 offset_top = 20.0
 offset_right = 1171.0
@@ -446,13 +448,11 @@ shape = SubResource("CapsuleShape2D_tcrup")
 position = Vector2(-4, 18)
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_8m7pp")
-animation = &"sitting"
 
 [node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="Player" unique_id=888815838]
 position = Vector2(-5, 20)
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_oy5xs")
-animation = &"sitting"
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=2097487679]
 position_smoothing_enabled = true

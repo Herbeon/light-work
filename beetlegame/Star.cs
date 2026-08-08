@@ -5,6 +5,10 @@ using System.ComponentModel;
 
 public partial class Star : Area2D
 {
+	[Signal]
+	public delegate void CollectedStarEventHandler(); 
+
+	int score = 0;
 	private AnimatedSprite2D _animatedStar;
 
 	// Called when the node enters the scene tree for the first time.
@@ -12,6 +16,7 @@ public partial class Star : Area2D
 	{
 		_animatedStar = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		_animatedStar.Play("default");
+		// CollectedStar.connect(colley());
 
 	}
 
@@ -24,6 +29,15 @@ public partial class Star : Area2D
 	{
 		GD.Print("hello");
 		_animatedStar.Play("explod");
+		score++;
+		GD.Print("stars collected: " + score);
 
+		EmitSignal(nameof(CollectedStar));	
 	}
+
+	// public void colley()
+	// {
+	// 	score++;
+	// 	GD.Print("stars collected: " + score);
+	// }
 }

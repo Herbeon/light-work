@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bbsw4xesm8kyi" path="res://arduino.cs" id="1_wtcfe"]
 [ext_resource type="Texture2D" uid="uid://dr7wifbp680bx" path="res://bodyspritesheet.png" id="2_ir8iy"]
-[ext_resource type="Script" uid="uid://cmbwdk74ugg3i" path="res://character_body_2d.gd" id="2_x0ka3"]
+[ext_resource type="Script" uid="uid://bds0et4tmueym" path="res://Player.cs" id="2_x0ka3"]
 [ext_resource type="Texture2D" uid="uid://55ocybswd2s3" path="res://wings/wing11.png" id="3_hqns4"]
 [ext_resource type="Texture2D" uid="uid://dot341n4s1mos" path="res://wings/wing10.png" id="4_x0ka3"]
 [ext_resource type="Texture2D" uid="uid://c2av43kq3dutp" path="res://wings/wing12.png" id="5_0h7mo"]

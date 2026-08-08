@@ -4,7 +4,7 @@ using System;
 public partial class Player : CharacterBody2D
 {
 	public const float Speed = 500.0f;
-	public const float JumpVelocity = -900.0f;
+	public const float JumpVelocity = -1400.0f;
 	private AnimatedSprite2D _animatedSprite;
 	private AnimatedSprite2D _animatedwing1;
 	private AnimatedSprite2D _animatedwing2;
@@ -21,6 +21,7 @@ public partial class Player : CharacterBody2D
 	public override void _PhysicsProcess(double delta)
 	{
 		Vector2 velocity = Velocity;
+		_animatedSprite.Play("default");
 
 		// Add the gravity.
 		if (!IsOnFloor())
@@ -29,9 +30,12 @@ public partial class Player : CharacterBody2D
 		}
 
 		// Handle Jump.
-		if (Input.IsActionJustPressed("up") && IsOnFloor())
+		if (Input.IsActionJustPressed("up"))
 		{
 			velocity.Y = JumpVelocity;
+			_animatedwing1.SpeedScale = velocity.Y/800;
+			_animatedwing2.SpeedScale = velocity.Y/800;
+
 			_animatedwing1.Play("default");
 			_animatedwing2.Play("default");
 		}
@@ -42,7 +46,6 @@ public partial class Player : CharacterBody2D
 		if (direction != Vector2.Zero)
 		{
 			velocity.X = direction.X * Speed;
-			_animatedSprite.Play("default");
 			// if(direction.X > 0)
 			// {
 			// 	_animatedwing1.Play("default");

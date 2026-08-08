@@ -27,12 +27,19 @@ public partial class arduino : Node2D
 			// change back later
 			return;
 		}
-		string serialMessage = serialPort.ReadLine();
+		if(serialPort.BytesToRead > 0)
+		{
+			GD.Print("HELO");
+			string serialMessage = serialPort.ReadLine();
 		// gets heree
-		if (serialMessage == "h"){
-			lalala++;
-			// cannot get here ._.
-			text.Text = "HELLOBACK" + lalala;
+			GD.Print(serialMessage);
+
+			if (serialMessage == "h"){
+				GD.Print("textytextext");
+				lalala++;
+				text.Text = "HELLOBACK" + lalala;
+			}	
 		}
+
 	}
 }

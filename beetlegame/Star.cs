@@ -27,10 +27,14 @@ public partial class Star : Area2D
 	}
 	public void _on_body_entered(Node2D body)
 	{
-		GD.Print("hello");
+		if(_animatedStar.Animation != "explod")
+		{
+			GD.Print("FIRST EXPLOD!!");
+			score++;
+			// this score is local to the star, need to make the thing
+			
+		}
 		_animatedStar.Play("explod");
-		score++;
-		GD.Print("stars collected: " + score);
 
 		EmitSignal(nameof(CollectedStar));	
 	}

@@ -7,7 +7,7 @@ public partial class Player : CharacterBody2D
 {
 	SerialPort serialPort;
 
-	public const float Speed = 500.0f;
+	public const float Speed = 1400.0f;
 	public const float JumpVelocity = -800.0f;
 	private AnimatedSprite2D _animatedSprite;
 	private AnimatedSprite2D _animatedwing1;
@@ -43,32 +43,31 @@ public partial class Player : CharacterBody2D
 		{
 			string serialMessage = serialPort.ReadLine();
 			// LEFT
+				// GD.Print(serialMessage);
 			if(serialMessage.IndexOf("LIDLE") != -1)
 			{
 				whee.X = 0;
-				// whee.Y = 0;	
-				velocity.Y = JumpVelocity;
-				_animatedwing1.Play("default");
+				whee.Y = 0;
 			}
 			if(serialMessage.IndexOf("LGENTLE") != -1)
 			{
 				whee.X = -0.87f;
-				// whee.Y = 0.5f;
-				velocity.Y = JumpVelocity;
+				whee.Y = 0.5f;
+				// velocity.Y = JumpVelocity;
 				_animatedwing1.Play("default");
 			}
 			if(serialMessage.IndexOf("LMODERATE") != -1)
 			{
 				whee.X = -0.5f;
-				// whee.Y = 0.87f;
-				velocity.Y = JumpVelocity;
+				whee.Y = 0.87f;
+				// velocity.Y = JumpVelocity;
 				_animatedwing1.Play("default");
 			}
 			if(serialMessage.IndexOf("LSTRONG") != -1)
 			{
 				whee.X = 0;
-				// whee.Y = 1;
-				velocity.Y = JumpVelocity;
+				whee.Y = 1;
+				// velocity.Y = JumpVelocity;
 				_animatedwing1.Play("default");
 			}
 			// idle, gentle, moderate, strong
@@ -79,26 +78,29 @@ public partial class Player : CharacterBody2D
 			// }
 			if(serialMessage.IndexOf("RIDLE") != -1)
 			{
-				whee.X = 0;
-				whee.Y = 0;
+				rhee.X = 0;
+				rhee.Y = 0;
 		
 			}
 			if(serialMessage.IndexOf("RGENTLE") != -1)
 			{
-				whee.X = 0.87f;
-				velocity.Y = JumpVelocity;
+				rhee.X = 0.87f;
+				rhee.Y= 0.5f;
+				// velocity.Y = JumpVelocity;
 				_animatedwing1.Play("default");
 			}
 			if(serialMessage.IndexOf("RMODERATE") != -1)
 			{
-				whee.X = 0.5f;
-				velocity.Y = JumpVelocity;
+				rhee.X = 0.5f;
+				rhee.Y = 0.87f;
+				// velocity.Y = JumpVelocity;
 				_animatedwing1.Play("default");
 			}
 			if(serialMessage.IndexOf("RSTRONG") != -1)
 			{
-				whee.X = 0;
-				velocity.Y = JumpVelocity;
+				rhee.X = 0;
+				rhee.Y = 1;
+				// velocity.Y = JumpVelocity;
 				_animatedwing1.Play("default");
 			}
 		}
@@ -117,45 +119,31 @@ public partial class Player : CharacterBody2D
 			_animatedwing2.Animation = "sitting";
 		}
 
-		// Handle Jump.
 		if (Input.IsActionJustPressed("left"))
 		{
 			velocity.Y = JumpVelocity;
 			_animatedwing1.Play("default");
-
 			// _animatedwing1.SpeedScale = Math.Abs(velocity.Y/800);
 			// _animatedwing2.SpeedScale = Math.Abs(velocity.Y/800);
 		}
 		if (Input.IsActionJustPressed("right"))
 		{
 			velocity.Y = JumpVelocity;
-	
 			_animatedwing2.Play("default");
-
 		}
-		// Get the input direction and handle the movement/deceleration.
-		// As good practice, you should replace UI actions with custom gameplay actions.
-		// Vector2 direction = Input.GetVector("left", "right", "up", "down");
-		// Vector2 direction = new Vector2(posx-negx,0);
-		// GD.Print(direction);
-		// Vector2 direction = new Vector2(xhelp,0);
-		whee = whee.Normalized();
-		rhee = rhee.Normalized();
-		GD.Print(whee);
-		GD.Print(rhee);
+
+		Vector2 direction = Input.GetVector("left", "right", "up", "down");
+
 		Vector2 dire = whee + rhee;
-		if (dire != Vector2.Zero)
+		if(direction != Vector2.Zero)
+		{
+
+			velocity.X = direction.X * Speed * 0.5f;
+		}
+		else if (dire != Vector2.Zero)
 		{
 			velocity.X = dire.X * Speed;
-			// GD.Print(direction.X);
-			// if(direction.X > 0)
-			// {
-			// 	_animatedwing1.Play("default");
-			// }
-			// if(direction.X < 0)
-			// {
-			// 	_animatedwing2.Play("default");
-			// }
+			velocity.Y = JumpVelocity * dire.Y ;
 		}
 		else
 		{

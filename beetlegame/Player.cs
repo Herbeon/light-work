@@ -29,14 +29,11 @@ public partial class Player : CharacterBody2D
 	{
 		// int xhelp = 0;
 
-		int negx = 0;
+		var whee = new Vector2();
+		whee.Y = 0;
+		var rhee = new Vector2();
+		rhee.Y = 0;
 
-		int posx = 0;
-
-		var whee = new Vector2
-		{
-			Y = 0
-		};
 		Vector2 velocity = Velocity;
 		if (!serialPort.IsOpen)
 		{
@@ -46,80 +43,63 @@ public partial class Player : CharacterBody2D
 		{
 			string serialMessage = serialPort.ReadLine();
 			// LEFT
-			// if(serialMessage.IndexOf("LIDLE") != -1)
-			// {
-				
-			// }
-			// if(serialMessage.IndexOf("LGENTLE") != -1 || serialMessage.IndexOf("LMODERATE") != -1 || serialMessage.IndexOf("LSTRONG") != -1)
-			// {
-			// 	velocity.Y = JumpVelocity;
-			// 	_animatedwing1.Play("default");
-			// }
-			// idle, gentle, moderate, strong
-			if (serialMessage.IndexOf("LEFT")!= -1)
+			if(serialMessage.IndexOf("LIDLE") != -1)
 			{
-				// lefty
-				if(serialMessage.IndexOf("IDLE") == -1)
-				{
-					whee.X += 1;
-					// if(posx < 1)
-					// {
-					// 	posx += 1;
-					// }
-				}
-				if(serialMessage.IndexOf("GENTLE") != -1)
-				{
-					// idle
-					// left gentle
-
-				}
-				else if(serialMessage.IndexOf("MODERATE") != -1)
-				{
-					// left moderate
-					velocity.Y = JumpVelocity;
-					_animatedwing1.Play("default");
-				}
-				else if(serialMessage.IndexOf("STRONG") != -1)
-				{
-					velocity.Y = JumpVelocity;
-					_animatedwing1.Play("default");
-					// left strong
-				}
+				whee.X = 0;
+				// whee.Y = 0;	
+				velocity.Y = JumpVelocity;
+				_animatedwing1.Play("default");
 			}
+			if(serialMessage.IndexOf("LGENTLE") != -1)
+			{
+				whee.X = -0.87f;
+				// whee.Y = 0.5f;
+				velocity.Y = JumpVelocity;
+				_animatedwing1.Play("default");
+			}
+			if(serialMessage.IndexOf("LMODERATE") != -1)
+			{
+				whee.X = -0.5f;
+				// whee.Y = 0.87f;
+				velocity.Y = JumpVelocity;
+				_animatedwing1.Play("default");
+			}
+			if(serialMessage.IndexOf("LSTRONG") != -1)
+			{
+				whee.X = 0;
+				// whee.Y = 1;
+				velocity.Y = JumpVelocity;
+				_animatedwing1.Play("default");
+			}
+			// idle, gentle, moderate, strong
 			// if (serialMessage == "h"){
 			// 	velocity.Y = JumpVelocity;
 
 			// 	GD.Print("textytextext");
 			// }
-			else if (serialMessage.IndexOf("RIGHT") != -1){
-				// lefty
-				if(serialMessage.IndexOf("IDLE") == -1)
-					{
-						// if(negx < 1)
-						// {
-						// 	negx += 1;
-						// }
-						whee.X -= 1;
-					}
-				if(serialMessage.IndexOf("GENTLE") != -1)
-				{
-					// idle
-					// left gentle
-					velocity.Y = JumpVelocity;
-					_animatedwing2.Play("default");
-				}
-				else if(serialMessage.IndexOf("MODERATE") != -1)
-				{
-					// left moderate
-					velocity.Y = JumpVelocity;
-					_animatedwing2.Play("default");
-				}
-				else if(serialMessage.IndexOf("STRONG") != -1)
-				{
-					velocity.Y = JumpVelocity;
-					_animatedwing2.Play("default");
-					// left strong
-				}
+			if(serialMessage.IndexOf("RIDLE") != -1)
+			{
+				whee.X = 0;
+				whee.Y = 0;
+		
+			}
+			if(serialMessage.IndexOf("RGENTLE") != -1)
+			{
+				whee.X = 0.87f;
+				velocity.Y = JumpVelocity;
+				_animatedwing1.Play("default");
+			}
+			if(serialMessage.IndexOf("RMODERATE") != -1)
+			{
+				whee.X = 0.5f;
+				velocity.Y = JumpVelocity;
+				_animatedwing1.Play("default");
+			}
+			if(serialMessage.IndexOf("RSTRONG") != -1)
+			{
+				whee.X = 0;
+				velocity.Y = JumpVelocity;
+				_animatedwing1.Play("default");
 			}
 		}
 		// Add the gravity.
@@ -160,10 +140,13 @@ public partial class Player : CharacterBody2D
 		// GD.Print(direction);
 		// Vector2 direction = new Vector2(xhelp,0);
 		whee = whee.Normalized();
+		rhee = rhee.Normalized();
 		GD.Print(whee);
-		if (whee != Vector2.Zero)
+		GD.Print(rhee);
+		Vector2 dire = whee + rhee;
+		if (dire != Vector2.Zero)
 		{
-			velocity.X = whee.X * Speed;
+			velocity.X = dire.X * Speed;
 			// GD.Print(direction.X);
 			// if(direction.X > 0)
 			// {

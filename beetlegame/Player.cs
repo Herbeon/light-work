@@ -16,7 +16,7 @@ public partial class Player : CharacterBody2D
 	public override void _Ready()
 	{
 		serialPort = new SerialPort();
-		serialPort.PortName = "/dev/ttyACM0";
+		serialPort.PortName = "/dev/ttyACM1";
 		serialPort.BaudRate = 9600;
 		serialPort.Open();
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
@@ -34,15 +34,69 @@ public partial class Player : CharacterBody2D
 		}
 		if(serialPort.BytesToRead > 0)
 		{
-			GD.Print("HELO");
 			string serialMessage = serialPort.ReadLine();
 			GD.Print(serialMessage);
+			// idle, gentle, moderate, strong
+			if (serialMessage.IndexOf("LEFT")!= -1)
+			{
+				// lefty
+				if(serialMessage.IndexOf("IDLE") == -1)
+				{
+					velocity.X = 1 * Speed;
 
-			if (serialMessage == "h"){
-				velocity.Y = JumpVelocity;
+				}
+				if(serialMessage.IndexOf("GENTLE") != -1)
+				{
+					// idle
+					// left gentle
+					velocity.Y = JumpVelocity;
+					_animatedwing1.Play("default");
+				}
+				else if(serialMessage.IndexOf("MODERATE") != -1)
+				{
+					// left moderate
+					velocity.Y = JumpVelocity;
+					_animatedwing1.Play("default");
+				}
+				else if(serialMessage.IndexOf("STRONG") != -1)
+				{
+					velocity.Y = JumpVelocity;
+					_animatedwing1.Play("default");
+					// left strong
+				}
+			}
+			// if (serialMessage == "h"){
+			// 	velocity.Y = JumpVelocity;
 
-				GD.Print("textytextext");
-			}	
+			// 	GD.Print("textytextext");
+			// }
+			else if (serialMessage.IndexOf("RIGHT") != -1){
+				// lefty
+				if(serialMessage.IndexOf("IDLE") == -1)
+					{
+						velocity.X = -1 * Speed;
+
+					}
+				if(serialMessage.IndexOf("GENTLE") != -1)
+				{
+					// idle
+					// left gentle
+					velocity.Y = JumpVelocity;
+					_animatedwing2.Play("default");
+				}
+				else if(serialMessage.IndexOf("MODERATE") != -1)
+				{
+					// left moderate
+					velocity.Y = JumpVelocity;
+					_animatedwing2.Play("default");
+				}
+				else if(serialMessage.IndexOf("STRONG") != -1)
+				{
+					velocity.Y = JumpVelocity;
+					_animatedwing2.Play("default");
+					// left strong
+				}
+			}
 		}
 		// Add the gravity.
 		if (!IsOnFloor())
@@ -55,8 +109,8 @@ public partial class Player : CharacterBody2D
 		else
 		{
 			_animatedSprite.Play("sitting");
-			_animatedwing1.Play("sitting");
-			_animatedwing2.Play("sitting");
+			_animatedwing1.Animation = "sitting";
+			_animatedwing2.Animation = "sitting";
 		}
 
 		// Handle Jump.
@@ -94,10 +148,9 @@ public partial class Player : CharacterBody2D
 		{
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
 			// _animatedSprite.Stop();
-			_animatedwing1.Stop();
-			_animatedwing2.Stop();
+			// _animatedwing1.Stop();
+			// _animatedwing2.Stop();
 		}
-
 		Velocity = velocity;
 
 		MoveAndSlide();

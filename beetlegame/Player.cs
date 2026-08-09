@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.IO.Ports;
+using System.Threading;
 
 public partial class Player : CharacterBody2D
 {
@@ -16,7 +17,7 @@ public partial class Player : CharacterBody2D
 	public override void _Ready()
 	{
 		serialPort = new SerialPort();
-		serialPort.PortName = "/dev/ttyACM1";
+		serialPort.PortName = "/dev/ttyACM0";
 		serialPort.BaudRate = 9600;
 		serialPort.Open();
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
@@ -26,7 +27,16 @@ public partial class Player : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		// int xhelp = 0;
 
+		int negx = 0;
+
+		int posx = 0;
+
+		var whee = new Vector2
+		{
+			Y = 0
+		};
 		Vector2 velocity = Velocity;
 		if (!serialPort.IsOpen)
 		{
@@ -35,22 +45,33 @@ public partial class Player : CharacterBody2D
 		if(serialPort.BytesToRead > 0)
 		{
 			string serialMessage = serialPort.ReadLine();
-			GD.Print(serialMessage);
+			// LEFT
+			// if(serialMessage.IndexOf("LIDLE") != -1)
+			// {
+				
+			// }
+			// if(serialMessage.IndexOf("LGENTLE") != -1 || serialMessage.IndexOf("LMODERATE") != -1 || serialMessage.IndexOf("LSTRONG") != -1)
+			// {
+			// 	velocity.Y = JumpVelocity;
+			// 	_animatedwing1.Play("default");
+			// }
 			// idle, gentle, moderate, strong
 			if (serialMessage.IndexOf("LEFT")!= -1)
 			{
 				// lefty
 				if(serialMessage.IndexOf("IDLE") == -1)
 				{
-					velocity.X = 1 * Speed;
-
+					whee.X += 1;
+					// if(posx < 1)
+					// {
+					// 	posx += 1;
+					// }
 				}
 				if(serialMessage.IndexOf("GENTLE") != -1)
 				{
 					// idle
 					// left gentle
-					velocity.Y = JumpVelocity;
-					_animatedwing1.Play("default");
+
 				}
 				else if(serialMessage.IndexOf("MODERATE") != -1)
 				{
@@ -74,8 +95,11 @@ public partial class Player : CharacterBody2D
 				// lefty
 				if(serialMessage.IndexOf("IDLE") == -1)
 					{
-						velocity.X = -1 * Speed;
-
+						// if(negx < 1)
+						// {
+						// 	negx += 1;
+						// }
+						whee.X -= 1;
 					}
 				if(serialMessage.IndexOf("GENTLE") != -1)
 				{
@@ -131,10 +155,16 @@ public partial class Player : CharacterBody2D
 		}
 		// Get the input direction and handle the movement/deceleration.
 		// As good practice, you should replace UI actions with custom gameplay actions.
-		Vector2 direction = Input.GetVector("left", "right", "up", "down");
-		if (direction != Vector2.Zero)
+		// Vector2 direction = Input.GetVector("left", "right", "up", "down");
+		// Vector2 direction = new Vector2(posx-negx,0);
+		// GD.Print(direction);
+		// Vector2 direction = new Vector2(xhelp,0);
+		whee = whee.Normalized();
+		GD.Print(whee);
+		if (whee != Vector2.Zero)
 		{
-			velocity.X = direction.X * Speed;
+			velocity.X = whee.X * Speed;
+			// GD.Print(direction.X);
 			// if(direction.X > 0)
 			// {
 			// 	_animatedwing1.Play("default");
